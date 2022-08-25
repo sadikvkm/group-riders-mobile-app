@@ -1,7 +1,10 @@
 
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:grouptravel/plugins/firebase_social_login/social_login_model.dart';
 import 'package:grouptravel/services/request.dart';
 
 class GoogleSingInProvider extends ChangeNotifier {
@@ -10,11 +13,11 @@ class GoogleSingInProvider extends ChangeNotifier {
   GoogleSignInAccount? _currentUser;
   GoogleSignInAccount? get currentUser => _currentUser!;
 
-  Future googleLogin() async {
+  Future googleLogin<SocialLoginModel>() async {
+
     final googleUser = await googleSignIn.signIn();
     if(googleUser == null) return;
     _currentUser = googleUser;
-
     final googleAuth = await googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(

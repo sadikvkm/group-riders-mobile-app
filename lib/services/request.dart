@@ -8,7 +8,7 @@ final JsonDecoder _decoder = new JsonDecoder();
 Future httpRequest(endPoint, body) async {
   final apiURL = dotenv.env['API_URL'];
   final url = apiURL! + endPoint;
-
+  print(apiURL);
   var client = http.Client();
   try {
     var response = await client.post(

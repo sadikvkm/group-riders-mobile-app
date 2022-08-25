@@ -25,11 +25,12 @@ class _DashboardState extends State<Dashboard> {
             bottom: const TabBar(
               tabs: [
                 Tab(
-                  text: 'Feeds',
-                ),
-                Tab(
                   text: 'My Trips',
                 ),
+                Tab(
+                  text: 'Feeds',
+                ),
+
               ],
             ),
             title: Text('Dashboard'),

@@ -36,7 +36,11 @@ class Auth extends StatelessWidget {
                     ],
                   )
               ),
-              GoogleSignInButton()
+              GoogleSignInButton(
+                onSuccess: () {
+                  Navigator.of(context).popAndPushNamed('/dashboard');
+                }
+              )
             ]
         )
       )

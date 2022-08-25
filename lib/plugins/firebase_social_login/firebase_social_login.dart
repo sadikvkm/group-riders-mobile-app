@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:grouptravel/modules/dashboard/dashboard.dart';
@@ -8,6 +9,15 @@ import 'package:provider/provider.dart';
 import 'google_sign_provide.dart';
 
 class GoogleSignInButton extends StatefulWidget {
+
+  const GoogleSignInButton({
+    Key? key,
+    required this.onSuccess
+  }) : super(key: key);
+
+  final Function onSuccess;
+
+
   @override
   _GoogleSignInButtonState createState() => _GoogleSignInButtonState();
 }
@@ -35,12 +45,11 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
         onPressed: () async {
           final provider = Provider.of<GoogleSingInProvider>(context, listen: false);
           final data = await provider.googleLogin();
+
           if (data != null) {
             if(data['code'] == 200) {
-              print(data);
-              AuthService.attemptLogin(data['result']);
-              // Navigator.of(context).popAndPushNamed('/dashboard');
-
+              AuthService.attemptLogin(jsonEncode(data['result']));
+              widget.onSuccess();
             }
           } else {
             log('Google Sign In Failed');
