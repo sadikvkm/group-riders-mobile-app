@@ -1,46 +1,33 @@
-import 'dart:developer';
-
-import 'package:grouptravel/modules/my_trips/trip_map.dart';
+import 'package:grouptravel/modules/my_trips/forms/new_trip_form.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
 
-class MyTrips extends StatelessWidget {
-  const MyTrips({Key? key}) : super(key: key);
+GlobalKey<NewTripFormWidget> globalKey = GlobalKey();
+
+class NewTrip extends StatelessWidget {
+  const NewTrip({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return PageContainer(
-      showAppBar: false,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).popAndPushNamed('/new-trip');
-        },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
-      ),
-      child: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Card(
-
-            child: InkWell(
+        showAppBar: true,
+        appbarName: "New trip",
+        appbarActions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TripMap()));
+                globalKey.currentState?.submit();
               },
-              child: Column(
-                children: const <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.flight),
-                    title: Text('Trip to Paris'),
-                    subtitle: Text('Departure: 12/12/2019'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+              child: const Icon(
+                Icons.check,
+                size: 26.0,
+              )
+            )
+          )
+        ],
+        child: NewTripForm(key: globalKey),
     );
   }
 }

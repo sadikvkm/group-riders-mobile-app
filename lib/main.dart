@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/login',
-      routes: appRoutes
+      debugShowCheckedModeBanner: false,
+      routes: appRoutes,
     ),
   );
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:grouptravel/modules/my_trips/new_trip.dart';
 import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,18 @@ class MyTrips extends StatelessWidget {
     // TODO: implement build
     return PageContainer(
       showAppBar: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewTrip()));
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
+      ),
       child: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
           return Card(
+
             child: InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TripMap()));

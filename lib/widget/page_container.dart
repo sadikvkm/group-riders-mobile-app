@@ -6,11 +6,13 @@ class PageContainer extends StatelessWidget {
     Key? key,
     required this.child,
     this.showAppBar: true,
-    this.appbarName: "App Bar",
+    this.appbarName: "Title",
     this.statusBarColor: Colors.blue,
     this.backgroundColor: Colors.white,
     this.bottomNavigationColor: Colors.black,
     this.statusBarIconBrightness: Brightness.dark,
+    this.floatingActionButton,
+    this.appbarActions
   }) : super(key: key);
 
   final Widget child;
@@ -20,6 +22,8 @@ class PageContainer extends StatelessWidget {
   final Color backgroundColor;
   final Color bottomNavigationColor;
   final Brightness statusBarIconBrightness;
+  final Widget? floatingActionButton;
+  final dynamic appbarActions;
 
 
   @override
@@ -31,15 +35,16 @@ class PageContainer extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: showAppBar ? AppBar(
-        title: Text(appbarName),
-        // brightness: Brightness.light,
+          title: Text(appbarName),
+          actions: appbarActions,
       ) : null,
       body: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         child: SafeArea(
           child: child,
         ),
       ),
+        floatingActionButton: floatingActionButton ,
     );
     return SafeArea(
       child: child,

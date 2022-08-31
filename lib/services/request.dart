@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:grouptravel/services/app_toast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -8,7 +9,7 @@ final JsonDecoder _decoder = new JsonDecoder();
 Future httpRequest(endPoint, body) async {
   final apiURL = dotenv.env['API_URL'];
   final url = apiURL! + endPoint;
-  print(apiURL);
+
   var client = http.Client();
   try {
     var response = await client.post(
