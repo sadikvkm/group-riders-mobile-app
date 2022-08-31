@@ -1,3 +1,5 @@
+import 'package:grouptravel/modules/my_trips/methods/trip_methods.dart';
+import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/app_text_box.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +17,17 @@ class NewTripFormWidget extends State<NewTripForm> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void submit() {
-
+  void submit (context) async {
     if (_formKey.currentState!.validate()) {
-      // If the form is valid, display a snackbar. In the real world,
-      // you'd often call a server or save the information in a database.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
+      final result = await createTrip({
+        "name": nameController.text
+      });
+      if(result['status']) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const TripMap()),
+        );
+      }
     }
   }
 
@@ -48,7 +53,7 @@ class NewTripFormWidget extends State<NewTripForm> {
                 },
               ),
               Container(
-                  margin: const EdgeInsets.only(top: 50),
+                  margin: const EdgeInsets.only(top: 20),
                   child : const Center(
                     child: Text(
                       'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',

@@ -1,4 +1,5 @@
 import 'package:grouptravel/modules/my_trips/forms/new_trip_form.dart';
+import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,8 @@ class NewTrip extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-              onTap: () {
-                globalKey.currentState?.submit();
+              onTap: () async {
+                globalKey.currentState?.submit(context);
               },
               child: const Icon(
                 Icons.check,

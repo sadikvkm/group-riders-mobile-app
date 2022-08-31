@@ -5,8 +5,18 @@ import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
 
-class MyTrips extends StatelessWidget {
+class MyTrips extends StatefulWidget {
   const MyTrips({Key? key}) : super(key: key);
+  MyTripsState createState() => MyTripsState();
+}
+
+class MyTripsState extends State<MyTrips> {
+
+  @override
+  @override
+  void initState() async {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
