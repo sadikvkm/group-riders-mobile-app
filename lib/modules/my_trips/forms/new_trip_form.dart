@@ -22,7 +22,7 @@ class NewTripFormWidget extends State<NewTripForm> {
       final result = await createTrip({
         "name": nameController.text
       });
-      if(result['status']) {
+      if(result['status'] == true) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const TripMap()),

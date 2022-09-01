@@ -1,9 +1,12 @@
 import 'dart:developer';
 
+import 'package:grouptravel/modules/my_trips/models/trip_list_model.dart';
 import 'package:grouptravel/modules/my_trips/new_trip.dart';
 import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
+
+import 'methods/trip_methods.dart';
 
 class MyTrips extends StatefulWidget {
   const MyTrips({Key? key}) : super(key: key);
@@ -12,11 +15,21 @@ class MyTrips extends StatefulWidget {
 
 class MyTripsState extends State<MyTrips> {
 
+  List<TripListModel> _newsArticles = <TripListModel>[];
+
   @override
-  @override
-  void initState() async {
+  void initState() {
     super.initState();
+    fetchInitialData();
   }
+
+  void fetchInitialData() async {
+
+    final d = await getAllTrips();
+    _newsArticles = d['result'];
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +44,7 @@ class MyTripsState extends State<MyTrips> {
         child: const Icon(Icons.add),
       ),
       child: ListView.builder(
-        itemCount: 5,
+        itemCount: _newsArticles.length,
         itemBuilder: (context, index) {
           return Card(
 
@@ -40,8 +53,9 @@ class MyTripsState extends State<MyTrips> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TripMap()));
               },
               child: Column(
-                children: const <Widget>[
-                  ListTile(
+                children: <Widget>[
+                  Text('$_newsArticles'),
+                  const ListTile(
                     leading: Icon(Icons.flight),
                     title: Text('Trip to Paris'),
                     subtitle: Text('Departure: 12/12/2019'),

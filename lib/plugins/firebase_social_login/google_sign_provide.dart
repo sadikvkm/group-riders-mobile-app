@@ -33,7 +33,7 @@ class GoogleSingInProvider extends ChangeNotifier {
     if(googleAuth.accessToken != null || googleAuth.idToken != null) {
       final response = await httpRequest('/social-login', {
         "token": token.toString()
-      });
+      }, 'POST');
 
       return response;
     };

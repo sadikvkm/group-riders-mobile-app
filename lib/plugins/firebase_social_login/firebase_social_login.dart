@@ -43,6 +43,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           ),
         ),
         onPressed: () async {
+          print('dsdsd');
+
           final provider = Provider.of<GoogleSingInProvider>(context, listen: false);
           final data = await provider.googleLogin();
 

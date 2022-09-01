@@ -7,22 +7,25 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final JsonDecoder _decoder = const JsonDecoder();
 
-Future httpRequest(endPoint, body) async {
+Future httpRequest(endPoint, [body, method = "GET"]) async {
   final apiURL = dotenv.env['API_URL'];
   final url = apiURL! + endPoint;
 
   var client = http.Client();
   final auth = await AuthService.getAuth();
 
+  final headers = <String, String> {
+    'Content-Type': 'application/json; charset=UTF-8',
+    'Authorization': endPoint == "/social-login" ? '' : 'Bearer ' + auth["access_token"]
+  };
+
   try {
-    var response = await client.post(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': endPoint == "/social-login" ? '' : 'Bearer ' + auth["access_token"]
-        },
-        body: jsonEncode(body)
-    );
+    http.Response response;
+    if(method == 'GET') {
+      response = await client.get(Uri.parse(url), headers: headers);
+    }else {
+      response = await client.post(Uri.parse(url), headers: headers, body: jsonEncode(body));
+    }
 
     final int statusCode = response.statusCode;
     if (statusCode < 200 || statusCode > 400 || json == null) {
