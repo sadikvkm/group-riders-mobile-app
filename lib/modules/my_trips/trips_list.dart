@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:grouptravel/modules/my_trips/models/trip_list_model.dart';
+import 'package:grouptravel/modules/my_trips/models/Job.dart';
 import 'package:grouptravel/modules/my_trips/new_trip.dart';
 import 'package:grouptravel/modules/my_trips/trip_map.dart';
 import 'package:grouptravel/widget/page_container.dart';
@@ -15,21 +16,6 @@ class MyTrips extends StatefulWidget {
 
 class MyTripsState extends State<MyTrips> {
 
-  List<TripListModel> _newsArticles = <TripListModel>[];
-
-  @override
-  void initState() {
-    super.initState();
-    fetchInitialData();
-  }
-
-  void fetchInitialData() async {
-
-    final d = await getAllTrips();
-    _newsArticles = d['result'];
-
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,29 +29,40 @@ class MyTripsState extends State<MyTrips> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-      child: ListView.builder(
-        itemCount: _newsArticles.length,
-        itemBuilder: (context, index) {
-          return Card(
-
-            child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TripMap()));
-              },
-              child: Column(
-                children: <Widget>[
-                  Text('$_newsArticles'),
-                  const ListTile(
-                    leading: Icon(Icons.flight),
-                    title: Text('Trip to Paris'),
-                    subtitle: Text('Departure: 12/12/2019'),
-                  ),
-                ],
-              ),
-            ),
-          );
+      child: FutureBuilder<List<Job>>(
+        future: getAllTrips(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Job>? data = snapshot.data;
+            return _jobsListView(data);
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          return const CircularProgressIndicator();
         },
       ),
     );
   }
 }
+
+
+ListView _jobsListView(data) {
+  return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return _tile(data[index].position, data[index].company, Icons.work);
+      });
+}
+
+ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
+  title: Text(title,
+      style: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+      )),
+  subtitle: Text(subtitle),
+  leading: Icon(
+    icon,
+    color: Colors.blue[500],
+  ),
+);
