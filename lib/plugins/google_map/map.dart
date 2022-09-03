@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class TripMapView extends StatefulWidget {
   const TripMapView({Key? key}) : super(key: key);
@@ -10,38 +12,45 @@ class TripMapView extends StatefulWidget {
 }
 
 class MapSampleState extends State<TripMapView> {
-  final Completer<GoogleMapController> _controller = Completer();
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  final LatLng _initialcameraposition = LatLng(20.5937, 78.9629);
+  late GoogleMapController _controller;
+  final Location _location = Location();
 
-  static const CameraPosition _userCurrentPosition = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void _onMapCreated(GoogleMapController cntlr)
+  {
+    _controller = cntlr;
+    _location.onLocationChanged.listen(<LocationData>(l) {
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(l.latitude, l.longitude),
+              zoom: 15
+          ),
+        ),
+      );
+      //
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: _initialcameraposition),
+          mapType: MapType.normal,
+          onMapCreated: _onMapCreated,
+          myLocationEnabled: true,
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
+        onPressed: ()  {},
         label: const Text('To the lake!'),
         icon: const Icon(Icons.directions_boat),
-      ),
+      )
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_userCurrentPosition));
   }
 }
