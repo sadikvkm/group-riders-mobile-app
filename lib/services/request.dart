@@ -8,10 +8,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 final JsonDecoder _decoder = const JsonDecoder();
 
 Future httpRequest(endPoint, [body, method = "GET"]) async {
+
   final apiURL = dotenv.env['API_URL'];
   final url = apiURL! + endPoint;
 
   var client = http.Client();
+  print('[]');
   final auth = await AuthService.getAuth();
 
   final headers = <String, String> {
@@ -20,6 +22,7 @@ Future httpRequest(endPoint, [body, method = "GET"]) async {
   };
 
   try {
+
     http.Response response;
     if(method == 'GET') {
       response = await client.get(Uri.parse(url), headers: headers);
@@ -28,7 +31,9 @@ Future httpRequest(endPoint, [body, method = "GET"]) async {
     }
 
     final int statusCode = response.statusCode;
-    if (statusCode < 200 || statusCode > 400 || json == null) {
+    appToast(jsonEncode(response.body).toString());
+
+    if (statusCode < 200 || statusCode > 400) {
       return {
         "code": statusCode,
         "status": false,

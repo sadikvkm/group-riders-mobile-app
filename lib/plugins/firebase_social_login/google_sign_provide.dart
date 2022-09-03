@@ -26,11 +26,11 @@ class GoogleSingInProvider extends ChangeNotifier {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     await FirebaseAuth.instance.signInWithCredential(credential);
     final user = await FirebaseAuth.instance.currentUser;
     final token = await user?.getIdToken();
     if(googleAuth.accessToken != null || googleAuth.idToken != null) {
+
       final response = await httpRequest('/social-login', {
         "token": token.toString()
       }, 'POST');

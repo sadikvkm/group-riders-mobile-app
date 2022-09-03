@@ -12,8 +12,13 @@ class AuthService {
   }
 
   static Future getAuth() async {
-    final authData = await SharedData.get('auth');
-    return jsonDecode(authData);
+
+    try {
+      final authData = await SharedData.get('auth');
+      return jsonDecode(authData);
+    } catch(error) {
+      return '';
+    }
   }
 
 }

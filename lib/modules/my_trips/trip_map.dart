@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +12,11 @@ class TripMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return TripMapView();
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+      child: TripMapView(),
+    );
   }
 }

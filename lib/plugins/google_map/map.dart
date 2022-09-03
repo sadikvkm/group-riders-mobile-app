@@ -11,13 +11,12 @@ class TripMapView extends StatefulWidget {
 
 class MapSampleState extends State<TripMapView> {
   final Completer<GoogleMapController> _controller = Completer();
-
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-////
-  static const CameraPosition _kLake = CameraPosition(
+
+  static const CameraPosition _userCurrentPosition = CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(37.43296265331129, -122.08832357078792),
       tilt: 59.440717697143555,
@@ -43,6 +42,6 @@ class MapSampleState extends State<TripMapView> {
 
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    controller.animateCamera(CameraUpdate.newCameraPosition(_userCurrentPosition));
   }
 }
