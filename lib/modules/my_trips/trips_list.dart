@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:grouptravel/modules/my_trips/models/Job.dart';
 import 'package:grouptravel/modules/my_trips/new_trip.dart';
 import 'package:grouptravel/modules/my_trips/trip_map.dart';
+import 'package:grouptravel/utilities/helpers.dart';
 import 'package:grouptravel/widget/page_container.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,6 @@ class MyTrips extends StatefulWidget {
 }
 
 class MyTripsState extends State<MyTrips> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,11 @@ class MyTripsState extends State<MyTrips> {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-      child: FutureBuilder<List<Job>>(
+      child: FutureBuilder<List<TripList>>(
         future: getAllTrips(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Job>? data = snapshot.data;
+            List<TripList>? data = snapshot.data;
             return _jobsListView(data);
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
@@ -50,19 +50,21 @@ ListView _jobsListView(data) {
   return ListView.builder(
       itemCount: data.length,
       itemBuilder: (context, index) {
-        return _tile(data[index].position, data[index].company, Icons.work);
+        return Card(
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TripMap()));
+            },
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.flight),
+                  title: Text(textCapitalize(data[index].name)),
+                  subtitle: Text(data[index].tripNumber),
+                ),
+              ],
+            ),
+          ),
+        );
       });
 }
-
-ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-  title: Text(title,
-      style: const TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 20,
-      )),
-  subtitle: Text(subtitle),
-  leading: Icon(
-    icon,
-    color: Colors.blue[500],
-  ),
-);
